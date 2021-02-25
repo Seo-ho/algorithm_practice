@@ -452,6 +452,7 @@ quicksort(list3)  # start, end 파라미터 없이 호출
 print(list3)
 
 
+# Dynamic Programming
 # memoization 방식의 fib_memo
 def fib_memo(n, cache):
     if n == 1 or n == 2:
@@ -480,13 +481,13 @@ print(fib(100))
 # tabulation방식 fib
 def fib_tab(n):
     cache = {}
-    #print(cache)
-    for i in range(1, n+1):
+    # print(cache)
+    for i in range(1, n + 1):
         if i < 3:
             cache[i] = 1
         else:
-            cache[i] = cache[i-1] + cache[i-2]
-        #print("cache: ", cache)
+            cache[i] = cache[i - 1] + cache[i - 2]
+        # print("cache: ", cache)
     return cache[n]
 
 
@@ -494,4 +495,196 @@ def fib_tab(n):
 print(fib_tab(10))
 print(fib_tab(56))
 print(fib_tab(132))
+
+
+# 공간 최적화 Dynamic Progrming
+def fib_optimized(n):
+    previous, current = 0, 1
+    for i in range(1, n):
+        current, previous = previous + current, current
+    return current
+
+
+# 테스트
+print(fib_optimized(16))
+print(fib_optimized(53))
+print(fib_optimized(213))
+
+
+# 최대 수익, Memoization
+def max_profit_memo(price_list, count, cache):
+    if count < 2:
+        cache[count] = price_list[count]
+        return cache[count]
+    if count in cache:
+        return cache[count]
+    if count < len(price_list):
+        max_price = price_list[count]
+    else:
+        max_price = price_list[-1]
+
+    # for i in range(1, count):
+    #    for j in range(1, count):
+    #        if i+j == count:
+    #            second_max = max_profit_memo(price_list, i, cache) + max_profit_memo(price_list, j, cache)
+    #            if second_max > max:
+    #                max = second_max
+    for i in range(1, count // 2 + 1):
+        second_max = max(max_price,
+                         max_profit_memo(price_list, i, cache) + max_profit_memo(price_list, count - i, cache))
+    cache[count] = max_price
+    return cache[count]
+
+
+"""
+
+    if cache.get(count) is None:
+
+        max = cache[1] * count
+        #max = 0
+        max_col = []
+        for i in range(1,count):
+        #for i in range(count+1):
+            for j in range(1,count):
+            #for j in range(count+1):
+                if i+j == count:
+                   max_col.append((i,j))
+        for i, j in max_col:
+            second = max_profit_memo(price_list, i, cache) + max_profit_memo(price_list, j, cache)
+            if second > max:
+                max = second
+        cache[count] = max
+        return cache[count]
+   # return cache[count]
+"""
+
+
+def max_profit(price_list, count):
+    max_profit_cache = {}
+
+    return max_profit_memo(price_list, count, max_profit_cache)
+
+
+# 테스트
+print(max_profit([0, 100, 400, 800, 900, 1000], 5))
+print(max_profit([0, 100, 400, 800, 900, 1000], 10))
+print(max_profit([0, 100, 400, 800, 900, 1000, 1400, 1600, 2100, 2200], 9))
+
+
+# 최대 수익 Tabulation
+def max_profit(price_list, count):
+    cache = {}
+    for i in range(1, count + 1):
+        if i < 2:
+            cache[i] = price_list[i]
+        else:
+            if i < len(price_list):
+                max_price = price_list[i]
+            else:
+                max_price = price_list[-1]
+            for j in range(1, i // 2 + 1):
+                max_price = max(max_price, cache[j] + cache[i - j])
+            cache[i] = max_price
+            # print("cache: ", cache)
+    return cache[count]
+
+
+print(max_profit([0, 100, 400, 800, 900, 1000], 5))
+print(max_profit([0, 200, 600, 900, 1200, 2000], 5))
+print(max_profit([0, 300, 600, 700, 1100, 1400], 8))
+print(max_profit([0, 100, 200, 400, 600, 900, 1200, 1300, 1500, 1800], 9))
+
+
+# 최소 동전으로 돈을 거슬러 주는 Greedy Algorithm
+def min_coin_count(value, coin_list):
+    count = 0
+    coin_list.sort()
+    # coin_list = sorted(coin_list)
+    while value > 0:
+        # print("value: ", value)
+        if value >= coin_list[3]:
+            count += 1
+            value -= coin_list[3]
+        elif value >= coin_list[2]:
+            count += 1
+            value -= coin_list[2]
+        elif value >= coin_list[1]:
+            count += 1
+            value -= coin_list[1]
+        else:
+            count += 1
+            value -= coin_list[0]
+    return count
+
+
+def min_coin_count(value, coin_list):
+    count = 0
+
+    for coin in sorted(coin_list, reverse=True):
+        count += (value // coin)
+        value %= coin
+    return count
+
+
+# 테스트
+default_coin_list = [100, 500, 10, 50]
+print(min_coin_count(1440, default_coin_list))
+print(min_coin_count(1700, default_coin_list))
+print(min_coin_count(23520, default_coin_list))
+print(min_coin_count(32590, default_coin_list))
+
+
+def max_product(card_lists):
+    output = 1
+    for person in card_lists:
+        output *= sorted(person, reverse=True)[0]
+    return output
+
+
+
+def min_fee(pages_to_print):
+    length = len(pages_to_print)
+    if length == 1:
+        return pages_to_print[0]
+    #time = sorted(pages_to_print)[0]
+    pages_to_print.sort()
+    time = pages_to_print[0]
+    time *= length
+    print("time: ", time, "length: ", length)
+    return time + min_fee(pages_to_print[1:])
+def min_fee(pages_to_print):
+    sorted_list = sorted(pages_to_print)
+    total = 0
+    for i in range(len(sorted_list)):
+        total += sorted_list[i] * (len(sorted_list) - i)
+    return total
+
+
+# 테스트
+print(min_fee([6, 11, 4, 1]))
+print(min_fee([3, 2, 1]))
+print(min_fee([3, 1, 4, 3, 2]))
+print(min_fee([8, 4, 2, 3, 9, 23, 6, 8]))
+
+# 최대한 많은 수업을 들을 수 있는 수업 조합
+def course_selection(course_list):
+    final_output = []
+    while len(course_list) > 0:
+        min = 100
+        for i in course_list:
+            if min > i[1]:
+                min = i[1]
+                output = i
+        final_output.append(output)
+        course_list.remove(output)
+        for i in course_list:
+            if min > i[0]:
+                course_list.remove(i)
+    return final_output
+
+
+
+print(course_selection([(6, 10), (2, 3), (4, 5), (1, 7), (6, 8), (9, 10)]))
+print(course_selection([(1, 2), (3, 4), (0, 6), (5, 7), (8, 9), (5, 9)]))
+print(course_selection([(4, 7), (2, 5), (1, 3), (8, 10), (5, 9), (2, 5), (13, 16), (9, 11), (1, 8)]))
 
