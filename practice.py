@@ -344,7 +344,6 @@ print(merge([4, 7, 8, 9], [1, 3, 6, 10]))
 
 # 합병 정렬
 def merge_sort(my_list):
-    # 코드를 입력하세요.
     median = len(my_list) // 2
     # if len(my_list) <= 2:
     #    return merge(my_list[:median], my_list[median:])
@@ -641,17 +640,18 @@ def max_product(card_lists):
     return output
 
 
-
 def min_fee(pages_to_print):
     length = len(pages_to_print)
     if length == 1:
         return pages_to_print[0]
-    #time = sorted(pages_to_print)[0]
+    # time = sorted(pages_to_print)[0]
     pages_to_print.sort()
     time = pages_to_print[0]
     time *= length
     print("time: ", time, "length: ", length)
     return time + min_fee(pages_to_print[1:])
+
+
 def min_fee(pages_to_print):
     sorted_list = sorted(pages_to_print)
     total = 0
@@ -665,6 +665,7 @@ print(min_fee([6, 11, 4, 1]))
 print(min_fee([3, 2, 1]))
 print(min_fee([3, 1, 4, 3, 2]))
 print(min_fee([8, 4, 2, 3, 9, 23, 6, 8]))
+
 
 # 최대한 많은 수업을 들을 수 있는 수업 조합
 def course_selection(course_list):
@@ -683,8 +684,6 @@ def course_selection(course_list):
     return final_output
 
 
-
 print(course_selection([(6, 10), (2, 3), (4, 5), (1, 7), (6, 8), (9, 10)]))
 print(course_selection([(1, 2), (3, 4), (0, 6), (5, 7), (8, 9), (5, 9)]))
 print(course_selection([(4, 7), (2, 5), (1, 3), (8, 10), (5, 9), (2, 5), (13, 16), (9, 11), (1, 8)]))
-
