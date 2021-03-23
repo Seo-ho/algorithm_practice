@@ -125,6 +125,8 @@ solution(5, [2, 4], [])
 
 for i in range(1, 5):
     print(i)
+
+
 # 상하좌우 문제
 def practice_4(N, lst):
     nx = 1
@@ -145,8 +147,9 @@ def practice_4(N, lst):
                 nx += 1
 
     return (nx, ny)
-practice_4(5, ['R', 'R', 'R', 'U', 'D', 'D'])
 
+
+practice_4(5, ['R', 'R', 'R', 'U', 'D', 'D'])
 
 n = int(input())
 x, y = 1, 1
@@ -166,3 +169,104 @@ for plan in plans:
     if nx < 1 or ny < 1 or nx > n or ny > n:
         continue
     x, y = nx, ny
+str(13)
+if str(13) in '3':
+    print("!!")
+for i in str(13):
+    print(i)
+
+
+def practice_5(N):
+    count = 0
+    for i in range(N):
+        for j in range(60):
+            for k in range(60):
+                if '3' in str(i) + str(j) + str(k):
+                    count += 1
+    return count
+
+
+def practice_6(location):
+    count = 0
+    row = ['1', '2', '3', '4', '5', '6', '7', '8']
+    col = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    ny = col.index(location[0])
+    nx = row.index(location[1])
+
+    case = [(-1, -2), (-1, 2), (1, -2), (1, 2), (-2, 1), (-2, -1), (2, 1), (2, -1)]
+    for x, y in case:
+        nxx = nx + x
+        nyy = ny + y
+        if nxx < 0 or nyy < 0 or nxx > 8 or nyy > 8:
+            continue
+        nx, ny = nxx, ny
+        count += 1
+    return count
+
+
+practice_6('a1')
+practice_6('c2')
+
+
+def practice_7(data):
+    text = []
+    output = ""
+    num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    number = 0
+    for i in data:
+        if i in num:
+            number += int(i)
+        else:
+            text.append(i)
+    text.sort()
+    #for i in text:
+    #    output += i
+    #output += str(number)
+    #return output
+    text.append(str(number))
+    return (''.join(text))
+
+
+practice_7('K1KA5CB7')
+
+for i in 'JAZ':
+    print(ord(i))
+3//2 + 1
+aa = 'A'
+ord('A') # 65
+ord('Z') # 90
+(65+90)/2
+name = 'JAZ'
+name[0]
+count = 0
+for i in name:
+    if ord(i) < 78:
+        count += ord(i) - 65
+    else:
+        count += ord('Z') - ord(i) + 1
+    count += 1
+
+count -= 1
+print(count)
+
+
+length = 0
+for i in range(len(name)):
+    word = ord(name[i])
+    if word == 65:
+        length = i
+        count -= 1
+        break
+    elif word < 78:
+        count += word - 65
+    else:
+        count += ord('Z') - word + 1
+    count += 1
+    print(i)
+for i in range(len(name)-1, length, -1):
+    count += 1
+    word = ord(name[i])
+    if word < 78:
+        count += word - 65
+    else:
+        count += ord('Z') - word + 1
